@@ -68,6 +68,7 @@ export function ScrollyStory({ title, description, steps }: ScrollyStoryProps) {
       return undefined;
     }
 
+    let animationFrameId: number | null = null;
     const stepElements = steps
       .map((step) => stepRefs.current[step.id])
       .filter((element): element is HTMLElement => Boolean(element));
@@ -80,15 +81,31 @@ export function ScrollyStory({ title, description, steps }: ScrollyStoryProps) {
       }
     };
 
+    const syncFromScroll = () => {
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
+
+      animationFrameId = window.requestAnimationFrame(() => {
+        syncFromViewport();
+        animationFrameId = null;
+      });
+    };
+
     syncFromViewport();
 
     window.addEventListener("pageshow", syncFromViewport);
     window.addEventListener("resize", syncFromViewport);
+    window.addEventListener("scroll", syncFromScroll, { passive: true });
 
     if (typeof IntersectionObserver === "undefined") {
       return () => {
+        if (animationFrameId !== null) {
+          window.cancelAnimationFrame(animationFrameId);
+        }
         window.removeEventListener("pageshow", syncFromViewport);
         window.removeEventListener("resize", syncFromViewport);
+        window.removeEventListener("scroll", syncFromScroll);
       };
     }
 
@@ -124,9 +141,13 @@ export function ScrollyStory({ title, description, steps }: ScrollyStoryProps) {
     stepElements.forEach((element) => observer.observe(element));
 
     return () => {
+      if (animationFrameId !== null) {
+        window.cancelAnimationFrame(animationFrameId);
+      }
       observer.disconnect();
       window.removeEventListener("pageshow", syncFromViewport);
       window.removeEventListener("resize", syncFromViewport);
+      window.removeEventListener("scroll", syncFromScroll);
     };
   }, [steps]);
 

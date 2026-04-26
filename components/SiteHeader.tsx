@@ -1,9 +1,11 @@
+import React from "react";
 import Link from "next/link";
 import styles from "./SiteHeader.module.css";
 
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/process", label: "Process" },
+  { href: "/specs", label: "Specs" },
   { href: "/#story", label: "Story" },
 ];
 

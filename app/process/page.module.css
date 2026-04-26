@@ -3,6 +3,16 @@
   gap: var(--space-4);
 }
 
+.sectionStack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.supportCopy {
+  margin: 0;
+  color: var(--muted);
+}
+
 .list {
   display: grid;
   gap: var(--space-3);
@@ -14,4 +24,27 @@
 .listItem {
   display: grid;
   gap: var(--space-1);
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-3);
+}
+
+.cardCopy {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.cardMeta {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
 }

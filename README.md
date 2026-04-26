@@ -1,72 +1,49 @@
-Here’s your **first summary expanded into a clean README file** (minimal, direct, and submission-ready):
+# Scrollytelling Assignment
 
----
+## Project
 
-# 📖 Scrollytelling – Spec-Driven Development
+Signals In Motion is a static-export-ready scrollytelling site built with Next.js App Router, TypeScript, CSS Modules, and local typed content objects. The project demonstrates a data-story topic on transit reliability while also exposing the spec-driven workflow used to build it.
 
-## 🧾 Assignment Summary
+## Features
 
-This assignment focuses on building a small web project using **scrollytelling** and **spec-driven development**, a modern workflow for guiding AI-assisted development.
+- Scrollytelling homepage with sticky visual and active-step progress controls
+- Separate Process page documenting the phased workflow
+- Separate Specs page summarizing the governing project documents
+- Static-export-compatible routing and assets for GitHub Pages
+- Unit and browser-level test coverage for story behavior, content pages, and navigation
 
-Students will explore how scrolling can be used to tell a story on a webpage and apply a structured development process to improve the quality and efficiency of their work.
+## Tech Stack
 
----
+- Next.js App Router
+- TypeScript
+- CSS Modules and CSS custom properties
+- Vitest and Testing Library
+- Playwright
+- GitHub Pages via GitHub Actions
 
-## 🔍 Overview
+## Scripts
 
-* Review example scrollytelling websites to understand how narrative is created through scrolling.
-* Use the provided starter repository and assets as a foundation.
-* Apply **spec-driven development** to guide implementation and AI usage.
+- `npm run lint`
+- `npm test`
+- `npm run build`
+- `npm run test:e2e`
 
----
+## Repository
 
-## 🎯 Objectives
+- GitHub repository: `https://github.com/studentNJ/scrollyTelling-assignment`
+- Intended GitHub Pages URL: `https://studentNJ.github.io/scrollyTelling-assignment/`
 
-* Create a **scrollytelling webpage** based on a portfolio or project idea
-* Practice writing and using **clear specifications (specs)** before coding
-* Use AI tools more effectively by defining structured requirements
-* Experiment with a **small subset of pages**, not a full project rebuild
+## Deployment Status
 
----
+Local deployment validation is complete:
 
-## 🧠 Key Concepts
+- `npm run build` generates the static `out/` directory
+- The GitHub Actions workflow uploads `out/` for Pages deployment
+- Browser-level tests pass against the exported site locally
 
-### Scrollytelling
+The live GitHub Pages URL was checked on April 26, 2026 and returned `404`, so deployment is prepared but not yet confirmed as publicly available.
 
-A web design technique where:
+## QA Notes
 
-* Content unfolds as the user scrolls
-* Sections are revealed in a narrative sequence
-* The experience feels interactive and engaging
-
-### Spec-Driven Development
-
-A workflow where:
-
-* Requirements are defined before development
-* AI tools are guided using structured prompts/specs
-* Development becomes faster and more efficient
-
----
-
-## 📦 Requirements
-
-* Use the provided starter repo and/or assets
-* Build at least a few pages demonstrating the process
-* Focus on **process and structure**, not just final visuals
-
----
-
-## 🚀 Submission
-
-* Deploy the project using **GitHub Pages**
-* Submit:
-
-  * A link to your **GitHub repository**
-  * A link to your **live deployed site** (included in README)
-
----
-
-## 💡 Goal
-
-The goal of this assignment is to learn how combining **structured planning** with **AI tools** can significantly improve development speed and quality—an increasingly important skill in modern software engineering.
+- Automated QA evidence is recorded in `documents/qa/phase-5-report.md`
+- Deployment-specific validation notes are recorded in `documents/qa/phase-6-report.md`

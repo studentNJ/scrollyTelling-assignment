@@ -1,6 +1,6 @@
 import React from "react";
-import Image from "next/image";
 import type { SiteContent } from "@/content/siteContent";
+import { ScrollyStory } from "@/components/ScrollyStory";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Section } from "@/components/ui/Section";
@@ -31,33 +31,7 @@ export function StoryPreview({ content }: StoryPreviewProps) {
       </Card>
 
       <Card as="section">
-        <Section description={content.story.description} eyebrow="Demo" id="story" title={content.story.title}>
-        <div className={styles.stepGrid}>
-          {content.storySteps.map((step) => (
-            <Card as="article" className={styles.stepCard} key={step.id} tone="tight">
-              <div className={styles.stepCopy}>
-                <p className={styles.stat}>{step.stat}</p>
-                <h3 className={styles.stepTitle}>{step.title}</h3>
-                <p>{step.description}</p>
-              </div>
-
-              {step.image ? (
-                <Image
-                  className={styles.stepImage}
-                  src={step.image.src}
-                  alt={step.image.alt}
-                  width={520}
-                  height={360}
-                />
-              ) : (
-                <div className={styles.stepFallback}>
-                  <p className={styles.placeholder}>Visual placeholder ready for a later phase.</p>
-                </div>
-              )}
-            </Card>
-          ))}
-        </div>
-        </Section>
+        <ScrollyStory description={content.story.description} steps={content.storySteps} title={content.story.title} />
       </Card>
 
       <Card as="section">

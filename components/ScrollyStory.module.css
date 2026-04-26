@@ -1,0 +1,158 @@
+.root {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.visualPane {
+  position: sticky;
+  top: 6rem;
+}
+
+.visualCard {
+  display: grid;
+  gap: var(--space-3);
+  min-height: 420px;
+}
+
+.visualMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.visualLabel,
+.visualCounter {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.visualCounter {
+  font-weight: 700;
+}
+
+.visualStat {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.visualTitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+.visualDescription {
+  margin: 0;
+  color: var(--muted);
+}
+
+.visualFrame,
+.visualFallback {
+  width: 100%;
+  min-height: 260px;
+  border-radius: 20px;
+}
+
+.visualFrame {
+  object-fit: cover;
+}
+
+.visualFallback {
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(15, 118, 110, 0.02));
+  text-align: center;
+  color: var(--muted);
+}
+
+.steps {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.step {
+  display: grid;
+  gap: var(--space-2);
+  min-height: 70vh;
+  align-content: center;
+  opacity: 0.56;
+  transform: translateY(12px);
+  transition: opacity 220ms ease, transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.stepActive {
+  opacity: 1;
+  transform: translateY(0);
+  border-color: rgba(15, 118, 110, 0.3);
+  box-shadow: 0 24px 60px rgba(15, 118, 110, 0.12);
+}
+
+.stepMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.stepIndex {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.stepStat {
+  display: inline-flex;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: rgba(15, 118, 110, 0.09);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.stepTitle {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.stepDescription {
+  margin: 0;
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step {
+    transition: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .visualPane {
+    position: static;
+  }
+
+  .visualCard,
+  .step {
+    min-height: unset;
+  }
+}

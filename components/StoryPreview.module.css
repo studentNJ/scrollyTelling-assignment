@@ -3,7 +3,6 @@
   gap: var(--space-4);
 }
 
-.stepGrid,
 .processGrid,
 .ctaGrid {
   display: grid;
@@ -15,51 +14,9 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-.stepCard {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(180px, 260px);
-  gap: var(--space-3);
-  align-items: center;
-}
-
-.stepTitle,
 .cardTitle {
   margin: 0;
   font-size: 1.2rem;
-}
-
-.stepCopy {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.stepImage,
-.stepFallback {
-  width: 100%;
-  min-height: 160px;
-  border-radius: 16px;
-}
-
-.stepImage {
-  object-fit: cover;
-}
-
-.stepFallback {
-  display: grid;
-  place-items: center;
-  padding: var(--space-3);
-  background: linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(15, 118, 110, 0.02));
-  color: var(--muted);
-  text-align: center;
-}
-
-.stat {
-  display: inline-flex;
-  padding: 0.35rem 0.7rem;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  font-weight: 700;
-  color: var(--accent);
 }
 
 .placeholder {
@@ -70,10 +27,4 @@
 .ctaLink {
   display: inline-flex;
   font-weight: 700;
-}
-
-@media (max-width: 800px) {
-  .stepCard {
-    grid-template-columns: 1fr;
-  }
 }

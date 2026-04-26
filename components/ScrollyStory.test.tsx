@@ -1,6 +1,7 @@
 import React from "react";
 import { act, render, screen } from "@testing-library/react";
-import { ScrollyStory } from "./ScrollyStory";
+import userEvent from "@testing-library/user-event";
+import { getClosestStepId, ScrollyStory } from "./ScrollyStory";
 import { siteContent } from "@/content/siteContent";
 
 type ObserverEntryShape = {
@@ -43,6 +44,12 @@ describe("ScrollyStory", () => {
     Object.defineProperty(window, "IntersectionObserver", {
       configurable: true,
       value: MockIntersectionObserver,
+      writable: true,
+    });
+
+    Object.defineProperty(window, "innerHeight", {
+      configurable: true,
+      value: 1000,
       writable: true,
     });
   });
@@ -91,6 +98,59 @@ describe("ScrollyStory", () => {
     expect(screen.getAllByText("Small disruptions cascade across the corridor")[0]).toBeInTheDocument();
   });
 
+  it("selects the step nearest the viewport center for refresh-style layout syncing", () => {
+    const makeStep = (id: string, top: number, bottom: number) => {
+      const element = document.createElement("div");
+
+      element.dataset.stepId = id;
+
+      Object.defineProperty(element, "getBoundingClientRect", {
+        configurable: true,
+        value: () => ({
+          bottom,
+          height: bottom - top,
+          left: 0,
+          right: 0,
+          top,
+          width: 300,
+          x: 0,
+          y: top,
+          toJSON: () => ({}),
+        }),
+      });
+
+      return element;
+    };
+
+    const selectedStepId = getClosestStepId([
+      makeStep("step-1", -280, 140),
+      makeStep("step-2", 780, 1020),
+      makeStep("step-3", 360, 720),
+    ]);
+
+    expect(selectedStepId).toBe("step-3");
+  });
+
+  it("lets progress buttons jump to a step without waiting for observer updates", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <ScrollyStory
+        description={siteContent.story.description}
+        steps={siteContent.storySteps}
+        title={siteContent.story.title}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /jump to small disruptions cascade across the corridor/i }));
+
+    expect(screen.getByText("2/3")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /jump to small disruptions cascade across the corridor/i })).toHaveAttribute(
+      "aria-current",
+      "step",
+    );
+  });
+
   it("keeps rendering when the active step has no image", () => {
     render(
       <ScrollyStory
@@ -101,5 +161,12 @@ describe("ScrollyStory", () => {
     );
 
     expect(screen.getByText("Visual placeholder ready for a later phase.")).toBeInTheDocument();
+  });
+
+  it("does not crash when section data is missing", () => {
+    render(<ScrollyStory description={siteContent.story.description} steps={[]} title={siteContent.story.title} />);
+
+    expect(screen.getByText("Story steps are still being assembled.")).toBeInTheDocument();
+    expect(screen.getByText("0/0")).toBeInTheDocument();
   });
 });

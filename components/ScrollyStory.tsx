@@ -17,17 +17,79 @@ function getInitialStep(steps: StoryStep[]) {
   return steps[0] ?? null;
 }
 
+export function getClosestStepId(stepElements: HTMLElement[]) {
+  if (typeof window === "undefined" || stepElements.length === 0) {
+    return null;
+  }
+
+  const viewportCenter = window.innerHeight / 2;
+
+  const rankedSteps = stepElements
+    .map((element) => {
+      const rect = element.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const distance = Math.abs(center - viewportCenter);
+      const overlapsViewport = rect.bottom > 0 && rect.top < window.innerHeight;
+
+      return {
+        distance,
+        id: element.dataset.stepId ?? null,
+        overlapsViewport,
+      };
+    })
+    .filter((entry): entry is { distance: number; id: string; overlapsViewport: boolean } => Boolean(entry.id));
+
+  const visibleStep = rankedSteps
+    .filter((entry) => entry.overlapsViewport)
+    .sort((left, right) => left.distance - right.distance)[0];
+
+  if (visibleStep) {
+    return visibleStep.id;
+  }
+
+  return rankedSteps.sort((left, right) => left.distance - right.distance)[0]?.id ?? null;
+}
+
 export function ScrollyStory({ title, description, steps }: ScrollyStoryProps) {
   const [activeStepId, setActiveStepId] = React.useState<string | null>(() => getInitialStep(steps)?.id ?? null);
   const ratiosRef = React.useRef<Record<string, number>>({});
+  const stepRefs = React.useRef<Record<string, HTMLElement | null>>({});
+
+  const activeStepIndex = steps.findIndex((step) => step.id === activeStepId);
+  const activeStep = steps.find((step) => step.id === activeStepId) ?? getInitialStep(steps);
 
   React.useEffect(() => {
     setActiveStepId(getInitialStep(steps)?.id ?? null);
+    stepRefs.current = {};
   }, [steps]);
 
   React.useEffect(() => {
-    if (typeof IntersectionObserver === "undefined" || steps.length === 0) {
+    if (steps.length === 0) {
       return undefined;
+    }
+
+    const stepElements = steps
+      .map((step) => stepRefs.current[step.id])
+      .filter((element): element is HTMLElement => Boolean(element));
+
+    const syncFromViewport = () => {
+      const closestStepId = getClosestStepId(stepElements);
+
+      if (closestStepId) {
+        setActiveStepId(closestStepId);
+      }
+    };
+
+    syncFromViewport();
+
+    window.addEventListener("pageshow", syncFromViewport);
+    window.addEventListener("resize", syncFromViewport);
+
+    if (typeof IntersectionObserver === "undefined") {
+      return () => {
+        window.removeEventListener("pageshow", syncFromViewport);
+        window.removeEventListener("resize", syncFromViewport);
+      };
     }
 
     const observer = new IntersectionObserver(
@@ -48,7 +110,10 @@ export function ScrollyStory({ title, description, steps }: ScrollyStoryProps) {
 
         if (nextStepId) {
           setActiveStepId(nextStepId);
+          return;
         }
+
+        syncFromViewport();
       },
       {
         rootMargin: "-18% 0px -32% 0px",
@@ -56,16 +121,23 @@ export function ScrollyStory({ title, description, steps }: ScrollyStoryProps) {
       },
     );
 
-    const stepElements = document.querySelectorAll<HTMLElement>("[data-scrolly-step]");
-
     stepElements.forEach((element) => observer.observe(element));
 
     return () => {
       observer.disconnect();
+      window.removeEventListener("pageshow", syncFromViewport);
+      window.removeEventListener("resize", syncFromViewport);
     };
   }, [steps]);
 
-  const activeStep = steps.find((step) => step.id === activeStepId) ?? getInitialStep(steps);
+  const setStepRef = (stepId: string) => (element: HTMLElement | null) => {
+    stepRefs.current[stepId] = element;
+  };
+
+  const jumpToStep = (stepId: string) => {
+    setActiveStepId(stepId);
+    stepRefs.current[stepId]?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   return (
     <div className={styles.root}>
@@ -77,12 +149,35 @@ export function ScrollyStory({ title, description, steps }: ScrollyStoryProps) {
             <div className={styles.visualMeta}>
               <p className={styles.visualLabel}>Active chapter</p>
               <p className={styles.visualCounter}>
-                {activeStep ? `${steps.findIndex((step) => step.id === activeStep.id) + 1}/${steps.length}` : `0/${steps.length}`}
+                {activeStep ? `${activeStepIndex + 1}/${steps.length}` : `0/${steps.length}`}
               </p>
             </div>
 
+            {steps.length > 0 ? (
+              <nav aria-label="Story progress" className={styles.progressNav}>
+                {steps.map((step, index) => {
+                  const isActive = step.id === activeStep?.id;
+
+                  return (
+                    <button
+                      aria-current={isActive ? "step" : undefined}
+                      className={[styles.progressButton, isActive ? styles.progressButtonActive : ""]
+                        .filter(Boolean)
+                        .join(" ")}
+                      key={step.id}
+                      onClick={() => jumpToStep(step.id)}
+                      type="button"
+                    >
+                      <span className="srOnly">Jump to {step.title}</span>
+                      <span aria-hidden="true">{index + 1}</span>
+                    </button>
+                  );
+                })}
+              </nav>
+            ) : null}
+
             {activeStep ? (
-              <>
+              <div className={styles.visualContent} key={activeStep.id}>
                 <p className={styles.visualStat}>{activeStep.stat}</p>
                 <h3 className={styles.visualTitle}>{activeStep.title}</h3>
                 <p className={styles.visualDescription}>{activeStep.description}</p>
@@ -100,8 +195,13 @@ export function ScrollyStory({ title, description, steps }: ScrollyStoryProps) {
                     <p>Visual placeholder ready for a later phase.</p>
                   </div>
                 )}
-              </>
-            ) : null}
+              </div>
+            ) : (
+              <div className={styles.emptyState}>
+                <h3 className={styles.visualTitle}>Story steps are still being assembled.</h3>
+                <p className={styles.visualDescription}>Add step content to restore the scroll narrative and sticky visual.</p>
+              </div>
+            )}
           </Card>
         </div>
 
@@ -120,6 +220,7 @@ export function ScrollyStory({ title, description, steps }: ScrollyStoryProps) {
                   aria-current={isActive ? "step" : undefined}
                   data-scrolly-step
                   data-step-id={step.id}
+                  ref={setStepRef(step.id)}
                 >
                   <div className={styles.stepMeta}>
                     <p className={styles.stepIndex}>Step {index + 1}</p>

@@ -1,43 +1,13 @@
 .grid {
   display: grid;
-  gap: 1.5rem;
-}
-
-.section {
-  padding: 2rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  box-shadow: var(--shadow);
-}
-
-.eyebrow {
-  margin: 0 0 0.75rem;
-  color: var(--accent);
-  font-size: 0.92rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.heading {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-}
-
-.copy {
-  max-width: 62ch;
-  margin: 1rem 0 0;
-  color: var(--muted);
+  gap: var(--space-4);
 }
 
 .stepGrid,
 .processGrid,
 .ctaGrid {
   display: grid;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: var(--space-3);
 }
 
 .processGrid,
@@ -45,20 +15,10 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-.stepCard,
-.processCard,
-.ctaCard {
-  height: 100%;
-  padding: 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--surface-strong);
-}
-
 .stepCard {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(180px, 260px);
-  gap: 1rem;
+  gap: var(--space-3);
   align-items: center;
 }
 
@@ -66,6 +26,11 @@
 .cardTitle {
   margin: 0;
   font-size: 1.2rem;
+}
+
+.stepCopy {
+  display: grid;
+  gap: var(--space-2);
 }
 
 .stepImage,
@@ -82,7 +47,7 @@
 .stepFallback {
   display: grid;
   place-items: center;
-  padding: 1rem;
+  padding: var(--space-3);
   background: linear-gradient(135deg, rgba(15, 118, 110, 0.12), rgba(15, 118, 110, 0.02));
   color: var(--muted);
   text-align: center;
@@ -104,7 +69,6 @@
 
 .ctaLink {
   display: inline-flex;
-  margin-top: 0.75rem;
   font-weight: 700;
 }
 

@@ -1,6 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import type { SiteContent } from "@/content/siteContent";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Section } from "@/components/ui/Section";
 import styles from "./StoryPreview.module.css";
 
 type StoryPreviewProps = {
@@ -10,39 +13,29 @@ type StoryPreviewProps = {
 export function StoryPreview({ content }: StoryPreviewProps) {
   return (
     <div className={styles.grid}>
-      <section className={styles.section} id="problem" aria-labelledby="problem-title">
-        <p className={styles.eyebrow}>Problem</p>
-        <h2 className={styles.heading} id="problem-title">
-          {content.problem.title}
-        </h2>
-        <p className={styles.copy}>{content.problem.description}</p>
-      </section>
+      <Card as="section">
+        <Section description={content.problem.description} eyebrow="Problem" id="problem" title={content.problem.title} />
+      </Card>
 
-      <section className={styles.section} id="workflow" aria-labelledby="workflow-title">
-        <p className={styles.eyebrow}>Process</p>
-        <h2 className={styles.heading} id="workflow-title">
-          {content.process.title}
-        </h2>
+      <Card as="section">
+        <Section eyebrow="Process" id="workflow" title={content.process.title}>
         <div className={styles.processGrid}>
           {content.processSteps.map((step) => (
-            <article className={styles.processCard} key={step.id}>
+            <Card as="article" key={step.id} tone="tight">
               <h3 className={styles.cardTitle}>{step.title}</h3>
               <p>{step.description}</p>
-            </article>
+            </Card>
           ))}
         </div>
-      </section>
+        </Section>
+      </Card>
 
-      <section className={styles.section} id="story" aria-labelledby="story-title">
-        <p className={styles.eyebrow}>Demo</p>
-        <h2 className={styles.heading} id="story-title">
-          {content.story.title}
-        </h2>
-        <p className={styles.copy}>{content.story.description}</p>
+      <Card as="section">
+        <Section description={content.story.description} eyebrow="Demo" id="story" title={content.story.title}>
         <div className={styles.stepGrid}>
           {content.storySteps.map((step) => (
-            <article className={styles.stepCard} key={step.id}>
-              <div>
+            <Card as="article" className={styles.stepCard} key={step.id} tone="tight">
+              <div className={styles.stepCopy}>
                 <p className={styles.stat}>{step.stat}</p>
                 <h3 className={styles.stepTitle}>{step.title}</h3>
                 <p>{step.description}</p>
@@ -61,40 +54,35 @@ export function StoryPreview({ content }: StoryPreviewProps) {
                   <p className={styles.placeholder}>Visual placeholder ready for a later phase.</p>
                 </div>
               )}
-            </article>
+            </Card>
           ))}
         </div>
-      </section>
+        </Section>
+      </Card>
 
-      <section className={styles.section} id="results" aria-labelledby="results-title">
-        <p className={styles.eyebrow}>Results</p>
-        <h2 className={styles.heading} id="results-title">
-          {content.results.title}
-        </h2>
-        <p className={styles.copy}>{content.results.description}</p>
-      </section>
+      <Card as="section">
+        <Section description={content.results.description} eyebrow="Results" id="results" title={content.results.title} />
+      </Card>
 
-      <section className={styles.section} id="cta" aria-labelledby="cta-title">
-        <p className={styles.eyebrow}>Call to action</p>
-        <h2 className={styles.heading} id="cta-title">
-          {content.cta.title}
-        </h2>
+      <Card as="section">
+        <Section eyebrow="Call to action" id="cta" title={content.cta.title}>
         <div className={styles.ctaGrid}>
           {content.cta.links.map((link) => (
-            <article className={styles.ctaCard} key={link.label}>
+            <Card as="article" key={link.label} tone="tight">
               <h3 className={styles.cardTitle}>{link.label}</h3>
               <p>{link.description}</p>
               {link.href ? (
-                <a className={styles.ctaLink} href={link.href} target="_blank" rel="noreferrer">
+                <Button className={styles.ctaLink} href={link.href} target="_blank" rel="noreferrer" variant="secondary">
                   Open link
-                </a>
+                </Button>
               ) : (
                 <p className={styles.placeholder}>Add the final URL in the deployment phase.</p>
               )}
-            </article>
+            </Card>
           ))}
         </div>
-      </section>
+        </Section>
+      </Card>
     </div>
   );
 }

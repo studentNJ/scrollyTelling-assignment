@@ -2,17 +2,30 @@
   --background: #f6f3eb;
   --surface: rgba(255, 255, 255, 0.78);
   --surface-strong: #fffdf8;
+  --surface-tint: rgba(255, 255, 255, 0.72);
   --text: #1f2933;
   --muted: #52606d;
   --border: rgba(31, 41, 51, 0.1);
   --accent: #0f766e;
   --accent-soft: #d7f1ec;
+  --focus-ring: rgba(15, 118, 110, 0.28);
   --shadow: 0 24px 60px rgba(31, 41, 51, 0.12);
   --radius-lg: 28px;
   --radius-md: 18px;
+  --radius-pill: 999px;
   --page-width: 1120px;
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 2.5rem;
   --font-display: "Space Grotesk", "Avenir Next", sans-serif;
   --font-body: "Source Sans 3", "Segoe UI", sans-serif;
+  --text-title-xl: clamp(2.75rem, 7vw, 5rem);
+  --text-title-lg: clamp(2.2rem, 6vw, 3.5rem);
+  --text-title-md: clamp(1.75rem, 4vw, 2.5rem);
+  --text-body-lg: 1.1rem;
 }
 
 * {
@@ -35,9 +48,22 @@ body {
   line-height: 1.5;
 }
 
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
 }
 
 img {
@@ -53,6 +79,19 @@ main {
 
 section {
   scroll-margin-top: 6rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.05;
+}
+
+p {
+  overflow-wrap: anywhere;
 }
 
 .srOnly {

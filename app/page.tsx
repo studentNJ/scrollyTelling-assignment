@@ -1,8 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { StoryPreview } from "@/components/StoryPreview";
 import { siteContent } from "@/content/siteContent";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Section } from "@/components/ui/Section";
 import styles from "./page.module.css";
 
 export default function HomePage() {
@@ -10,24 +12,27 @@ export default function HomePage() {
     <>
       <SiteHeader />
       <main className={styles.page}>
-        <section className={styles.hero} id="top" aria-labelledby="hero-title">
-          <div className={styles.heroCard}>
-            <p className={styles.eyebrow}>{siteContent.hero.kicker}</p>
-            <h1 className={styles.title} id="hero-title">
-              {siteContent.hero.title}
-            </h1>
-            <p className={styles.subtitle}>{siteContent.hero.subtitle}</p>
+        <section className={styles.hero} id="top" aria-labelledby="top-title">
+          <Card className={styles.heroContent} glass>
+            <Section
+              description={siteContent.hero.subtitle}
+              eyebrow={siteContent.hero.kicker}
+              id="top"
+              title={siteContent.hero.title}
+              titleClassName={styles.heroTitle}
+              tone="display"
+            />
             <div className={styles.heroActions}>
-              <Link className={styles.primaryAction} href="#story">
+              <Button href="#story">
                 Jump to story steps
-              </Link>
-              <Link className={styles.secondaryAction} href="/process">
+              </Button>
+              <Button href="/process" variant="secondary">
                 View process page
-              </Link>
+              </Button>
             </div>
-          </div>
+          </Card>
 
-          <div className={styles.heroVisual}>
+          <Card className={styles.heroVisual} glass>
             <Image
               className={styles.heroImage}
               src={siteContent.hero.image.src}
@@ -36,7 +41,7 @@ export default function HomePage() {
               height={720}
               priority
             />
-          </div>
+          </Card>
         </section>
 
         <StoryPreview content={siteContent} />

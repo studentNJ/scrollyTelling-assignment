@@ -1,0 +1,20 @@
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.default {
+  padding: var(--space-5);
+}
+
+.tight {
+  padding: 1.25rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+}
+
+.glass {
+  backdrop-filter: blur(16px);
+}

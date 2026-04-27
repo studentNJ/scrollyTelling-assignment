@@ -31,17 +31,21 @@ Signals In Motion is a static-export-ready scrollytelling site built with Next.j
 ## Repository
 
 - GitHub repository: `https://github.com/studentNJ/scrollyTelling-assignment`
-- Intended GitHub Pages URL: `https://studentNJ.github.io/scrollyTelling-assignment/`
+- GitHub Pages URL: `https://studentNJ.github.io/scrollyTelling-assignment/`
 
 ## Deployment Status
 
-Local deployment validation is complete:
+Deployment is live on GitHub Pages.
+
+Local and deployment validation completed:
 
 - `npm run build` generates the static `out/` directory
 - The GitHub Actions workflow uploads `out/` for Pages deployment
 - Browser-level tests pass against the exported site locally
+- The public GitHub Pages homepage is reachable
+- The production asset-path issue was fixed so deployed images load under the repository base path
 
-The live GitHub Pages URL was checked on April 26, 2026 and returned `404`, so deployment is prepared but not yet confirmed as publicly available.
+The live GitHub Pages URL was rechecked on April 27, 2026 and is serving the deployed site successfully.
 
 ## QA Notes
 

@@ -81,6 +81,12 @@ export type SiteContent = {
   };
 };
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+function withBasePath(path: string) {
+  return path.startsWith("/") ? `${basePath}${path}` : path;
+}
+
 export const siteContent: SiteContent = {
   hero: {
     kicker: "Data-story topic",
@@ -88,7 +94,7 @@ export const siteContent: SiteContent = {
     subtitle:
       "A lean scrollytelling scaffold about how transit reliability shapes a city morning, ready for later sticky visuals and scroll-driven state.",
     image: {
-      src: "/images/data-wave.svg",
+      src: withBasePath("/images/data-wave.svg"),
       alt: "Abstract data streams flowing across a transit map.",
     },
   },
@@ -202,7 +208,7 @@ export const siteContent: SiteContent = {
         "A single signal slowdown looks minor on its own, but it quietly forces later trains to bunch up before riders see the first crowded platform.",
       stat: "06:42",
       image: {
-        src: "/images/data-wave.svg",
+        src: withBasePath("/images/data-wave.svg"),
         alt: "A stylized chart showing a small delay spreading across multiple routes.",
       },
     },
@@ -213,7 +219,7 @@ export const siteContent: SiteContent = {
         "Once a corridor slips below its expected cadence, every platform update becomes less trustworthy and rider decisions become more reactive.",
       stat: "+18%",
       image: {
-        src: "/images/data-wave.svg",
+        src: withBasePath("/images/data-wave.svg"),
         alt: "A corridor diagram with expanding interruption markers.",
       },
     },
